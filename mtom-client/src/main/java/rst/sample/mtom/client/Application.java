@@ -23,14 +23,30 @@ public class Application {
 		ApplicationContext ctx = springApplication.run();
 		DocumentsClient documentsClient = ctx.getBean(DocumentsClient.class);
 
+		
+		/*
 		int size = readSize();
 		while (size > 0) {
 			documentsClient.storeDocument(size);
 			size = readSize();
 		}
+		*/
+		readInput(documentsClient);
+		
+		
 		System.out.println("exit");
 	}
 
+	private static boolean readInput(DocumentsClient documentsClient) throws IOException {
+		System.out.println("Input file: <path> <filename> <author>");
+		String line = readLine();
+		if (line.equals("")) return false;
+		
+		String[] inputs = line.split(" ");
+		documentsClient.storeDocument(inputs[0], inputs[1], inputs[2]);
+		return true;
+	}
+	
 	private static int readSize() throws IOException {
 		Integer result = null;
 		while (result == null) {
